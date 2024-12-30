@@ -2,12 +2,12 @@
      margin: 0;
      padding: 0;
      box-sizing: border-box;
+     font-family: laila;
  }
 
  body {
      width: 100%;
      height: 100%;
-     /* font-family: 'Test Sohne'; */
      background-color: #fb7427;
      color: #fef4b8;
  }
@@ -21,6 +21,16 @@
  p {
      font-size: 15px;
      line-height: 1.25;
+ }
+
+ a {
+    color: #fef4b8;
+    text-decoration: none;
+ }
+
+ .logo {
+    font-weight: 800;
+    font-size: x-large;
  }
 
  nav {
@@ -47,7 +57,6 @@
      border-radius: 2em;
      color: #fef4b8;
      background-color: transparent;
-     /* font-family: 'Test sohne'; */
      font-size: 15px;
      padding: 0.5em 1em;
  }
@@ -64,8 +73,9 @@
     z-index: 2;
  }
 
- footer h1 {
+ footer h2 {
     width: 40%;
+    font-weight: 100;
  }
 
  .footer-links {

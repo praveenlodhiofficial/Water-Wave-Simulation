@@ -71,7 +71,7 @@ import {
     canvas.height = height;
     const ctx = canvas.getContext("2d", { alpha: true });
   
-    ctx.fillStyle = "#fb7427";
+    ctx.fillStyle = "fb7427";
     ctx.fillRect(0, 0, width, height);
   
     const fontSize = Math.round(250 * window.devicePixelRatio);
@@ -82,7 +82,7 @@ import {
     ctx.textRendering = "geometricPrecision";
     ctx.imageSmoothingEnabled = "true";
     ctx.imageSmoothingQuality = "high";
-    ctx.fillText("softhorizon", width / 2, height / 2);
+    ctx.fillText("Shaders", width / 2, height / 2);
   
     const textTexture = new THREE.CanvasTexture(canvas);
     textTexture.minFilter = THREE.LinearFilter;
@@ -99,7 +99,7 @@ import {
   
       canvas.width = newWidth;
       canvas.height = newHeight;
-      ctx.fillStyle = "#fb7427";
+      ctx.fillStyle = "fb7427";
       ctx.fillRect(0, 0, newWidth, newHeight);
   
       const newFontSize = Math.round(250 * window.devicePixelRatio);
@@ -107,7 +107,7 @@ import {
       ctx.font = `bold ${newFontSize}px Test Söhne`;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
-      ctx.fillText("softhorizon", newWidth / 2, newHeight / 2);
+      ctx.fillText("Shaders", newWidth / 2, newHeight / 2);
   
       textTexture.needsUpdate = true;
     });

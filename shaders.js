@@ -46,13 +46,17 @@ export const simulationFragmentShader = `
     pVel -= 0.005 * delta * pressure;    
     
     pVel *= 1.0 - 0.002 * delta;
-    pressure *= 0.999;
+
+    // changed pressure
+    pressure *= 0.95;
 
     vec2 mouseUV = mouse / resolution;
     if (mouse.x > 0.0) {
       float dist = distance(uv, mouseUV);
+
+    // changed pressure & radius
       if (dist <= 0.02) { // Smaller radius for more precise ripples
-        pressure += 2.0 * (1.0 - dist / 0.02); // Increased intensity
+        pressure += 1.5 * (1.0 - dist / 0.02); // Increased intensity
       }
     }
 
@@ -79,7 +83,7 @@ export const renderFragmentShader = `
     vec4 color = texture2D(textureB, vUv + distortion);
 
     vec3 normal = normalize(vec3(-data.z * 2.0, 0.5, -data.w * 2.0));
-    vec3 lightDir = normalize(vec3(-3.0, 10.0, 3.0));
+    vec3 lightDir = normalize(vec3(-3.0, 5.0, 3.0));
     float specular = pow(max(0.0, dot(normal, lightDir)), 60.0) * 1.5;
 
     gl_FragColor = color + vec4(specular);
