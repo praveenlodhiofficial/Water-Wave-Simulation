@@ -38,6 +38,18 @@ import {
     let rtA = new THREE.WebGLRenderTarget(width, height, options);
     let rtB = new THREE.WebGLRenderTarget(width, height, options);
   
+    const simMaterial = new THREE.ShaderMaterial({
+      uniforms: {
+        textureA: { value: null },
+        mouse: { value: mouse },
+        resolution: { value: new THREE.Vector2(width, height) },
+        time: { value: 0 },
+        frame: { value: 0 },
+      },
+      vertexShader: simulationVertexShader,
+      fragmentShader: simulationFragmentShader,
+    });
+  
     const renderMaterial = new THREE.ShaderMaterial({
       uniforms: {
         textureA: { value: null },
@@ -50,6 +62,7 @@ import {
   
     const plane = new THREE.PlaneGeometry(2, 2);
     const simQuad = new THREE.Mesh(plane, simMaterial);
+    const renderQuad = new THREE.Mesh(plane, renderMaterial);
     simScene.add(simQuad);
     scene.add(renderQuad);
   
@@ -63,6 +76,9 @@ import {
   
     const fontSize = Math.round(250 * window.devicePixelRatio);
     ctx.fillStyle = "#fef4b8";
+    ctx.font = `bold ${fontSize}px Test Söhne`;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
     ctx.textRendering = "geometricPrecision";
     ctx.imageSmoothingEnabled = "true";
     ctx.imageSmoothingQuality = "high";
@@ -86,6 +102,13 @@ import {
       ctx.fillStyle = "#fb7427";
       ctx.fillRect(0, 0, newWidth, newHeight);
   
+      const newFontSize = Math.round(250 * window.devicePixelRatio);
+      ctx.fillStyle = "#fef4b8";
+      ctx.font = `bold ${newFontSize}px Test Söhne`;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText("softhorizon", newWidth / 2, newHeight / 2);
+  
       textTexture.needsUpdate = true;
     });
   
@@ -97,6 +120,27 @@ import {
     renderer.domElement.addEventListener("mouseleave", () => {
       mouse.set(0, 0);
     });
-
+  
+    const animate = () => {
+      simMaterial.uniforms.frame.value = frame++;
+      simMaterial.uniforms.time.value = performance.now() / 1000;
+      
+      simMaterial.uniforms.textureA.value = rtA.texture;
+      renderer.setRenderTarget(rtB);
+      renderer.render(simScene, camera);
+  
+      renderMaterial.uniforms.textureA.value = rtB.texture;
+      renderMaterial.uniforms.textureB.value = textTexture;
+      renderer.setRenderTarget(null);
+      renderer.render(scene, camera);
+  
+      const temp = rtA;
+      rtA = rtB;
+      rtB = temp;
+  
+      requestAnimationFrame(animate);
+    };
+  
+    animate();
   });
   
